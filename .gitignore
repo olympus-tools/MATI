@@ -1,0 +1,27 @@
+# folders
+examples/output/*
+dist/*
+logs/*
+dist/*
+build/*
+docs/_build/*
+
+# python
+**/.venv/*
+**/env/
+*.env/
+**/__pycache__/*
+**/mati.egg-info/*
+**/MATI.egg-info/*
+*.pyc
+*.pyo
+.python-version
+
+# coverage
+.coverage
+.coverage.*
+htmlcov/
+
+# others
+
+# exceptions
