@@ -1,0 +1,111 @@
+[project]
+name = "dcmi"
+description = "*.mat file interface"
+readme = "README.md"
+authors = [
+  {name = "Andrä Carotta"},
+  {name = "Jonas Bleich"},
+]
+license = {file = "LICENSE"}
+requires-python = ">=3.13"
+keywords = ["mat"]
+classifiers = [
+    # Intended Audience
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Manufacturing",
+
+    # Topic
+    "Topic :: Scientific/Engineering",
+
+    # Programming Language
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+
+    # License
+    "License :: OSI Approved :: Apache Software License",
+
+    # Operating System
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+
+    # Environment
+    "Environment :: Console",
+]
+
+dependencies = [
+    "typeguard==4.4.4",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+test = [
+    "pytest==8.4.1",
+    "pytest-cov==6.0.0",
+]
+dev = [
+    "ruff==0.12.11",
+    "gitpython==3.1.45",
+    "pip-licenses==5.0.0",
+    "pipdeptree==2.23.4",
+    "dcmi[test]",
+]
+docs = []
+release = [
+    "dcmi[dev]",
+    "dcmi[docs]",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/olympus-tools/MATI"
+"Documentation" = "https://github.com/olympus-tools/MATI#readme"
+"Bug Tracker" = "https://github.com/olympus-tools/MATI/issues"
+"Repository" = "https://github.com/olympus-tools/MATI"
+"Changelog" = "https://github.com/olympus-tools/MATI/releases"
+"Source" = "https://github.com/olympus-tools/MATI"
+"Security Policy" = "https://github.com/olympus-tools/MATI/security/policy"
+"Contributing" = "https://github.com/olympus-tools/MATI/blob/master/CONTRIBUTING.md"
+
+[tool.setuptools.packages.find]
+include = ["dcmi*"]
+
+[tool.setuptools.package-data]
+dcmi = ["py.typed"]
+
+[tool.setuptools_scm]
+write_to = "dcmi/core/version.py"
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+python_files = ["test_*.py"]
+addopts = [
+    "--ignore=test/examples",
+]
+
+[tool.ruff]
+# The maximum line length.
+line-length = 88
+# The target Python version.
+target-version = "py312"
+# Excluded files and directories.
+exclude = [
+    "ares/core/version.py",
+    "packages",
+    "submodules",
+    ".venv",
+]
+
+[tool.ruff.format]
+# The preferred quote style.
+quote-style = "double"
+# The preferred indentation style.
+indent-style = "space"
+
+[tool.pyright]
+# Pyright will analyze files in this directory.
+include = ["dcmi", "test"]
+reportAny = "none"
+reportExplicitAny = "none"
+venvPath = "."
+venv = ".venv"

@@ -1,0 +1,41 @@
+# folders
+
+
+# python
+<<<<<<< Updated upstream
+
+||||||| Stash base
+**/.venv/*
+**/env/
+*.env/
+**/__pycache__/*
+**/mati.egg-info/*
+**/MATI.egg-info/*
+*.pyc
+*.pyo
+.python-version
+=======
+**/.venv/*
+**/env/
+*.env/
+**/__pycache__/*
+**/dcmi.egg-info/*
+**/MATI.egg-info/*
+*.pyc
+*.pyo
+.python-version
+>>>>>>> Stashed changes
+
+# coverage
+
+
+# datasource
+
+
+# compilation artefacts
+
+
+# others
+
+
+# exceptions
