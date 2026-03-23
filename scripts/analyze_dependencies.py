@@ -288,7 +288,7 @@ def generate_notice_file() -> str:
         return ""
 
     # Filter out the MATI package itself
-    packages = [pkg for pkg in packages if pkg.get("Name", "").lower() != "dcmi"]
+    packages = [pkg for pkg in packages if pkg.get("Name", "").lower() != "mati"]
 
     notice_content = [
         "MATI (*.mat file interface)",

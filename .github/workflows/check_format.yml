@@ -1,0 +1,30 @@
+name: Check Format Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  check-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Setup MATI Environment
+        uses: ./.github/workflow-actions/setup-mati
+
+      - name: Run ruff for format checking
+        run: |
+          make format-check
+
+      - name: Cleanup MATI Environment
+        uses: ./.github/workflow-actions/cleanup-mati

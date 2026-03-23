@@ -1,0 +1,30 @@
+name: Test Requirements Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test-requirements:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Setup MATI Environment
+        uses: ./.github/workflow-actions/setup-mati
+
+      - name: Run requirements tests
+        run: |
+          make test-requirements
+
+      - name: Cleanup MATI Environment
+        uses: ./.github/workflow-actions/cleanup-mati

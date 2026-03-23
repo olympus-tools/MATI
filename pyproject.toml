@@ -1,5 +1,5 @@
 [project]
-name = "dcmi"
+name = "mati"
 description = "*.mat file interface"
 readme = "README.md"
 authors = [
@@ -49,12 +49,12 @@ dev = [
     "gitpython==3.1.45",
     "pip-licenses==5.0.0",
     "pipdeptree==2.23.4",
-    "dcmi[test]",
+    "mati[test]",
 ]
 docs = []
 release = [
-    "dcmi[dev]",
-    "dcmi[docs]",
+    "mati[dev]",
+    "mati[docs]",
 ]
 
 [project.urls]
@@ -68,13 +68,13 @@ release = [
 "Contributing" = "https://github.com/olympus-tools/MATI/blob/master/CONTRIBUTING.md"
 
 [tool.setuptools.packages.find]
-include = ["dcmi*"]
+include = ["mati*"]
 
 [tool.setuptools.package-data]
-dcmi = ["py.typed"]
+mati = ["py.typed"]
 
 [tool.setuptools_scm]
-write_to = "dcmi/core/version.py"
+write_to = "mati/core/version.py"
 
 [tool.pytest.ini_options]
 testpaths = ["test"]
@@ -104,7 +104,7 @@ indent-style = "space"
 
 [tool.pyright]
 # Pyright will analyze files in this directory.
-include = ["dcmi", "test"]
+include = ["mati", "test"]
 reportAny = "none"
 reportExplicitAny = "none"
 venvPath = "."

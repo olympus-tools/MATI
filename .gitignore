@@ -1,10 +1,12 @@
 # folders
-
+examples/output/*
+dist/*
+logs/*
+dist/*
+build/*
+docs/_build/*
 
 # python
-<<<<<<< Updated upstream
-
-||||||| Stash base
 **/.venv/*
 **/env/
 *.env/
@@ -14,28 +16,12 @@
 *.pyc
 *.pyo
 .python-version
-=======
-**/.venv/*
-**/env/
-*.env/
-**/__pycache__/*
-**/dcmi.egg-info/*
-**/MATI.egg-info/*
-*.pyc
-*.pyo
-.python-version
->>>>>>> Stashed changes
 
 # coverage
-
-
-# datasource
-
-
-# compilation artefacts
-
+.coverage
+.coverage.*
+htmlcov/
 
 # others
-
 
 # exceptions
