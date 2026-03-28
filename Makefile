@@ -43,23 +43,11 @@ setup-venv:
 	# Check if .git exists to decide on versioning strategy for editable install \
 	if [ ! -d ".git" ]; then \
 		echo "NOTE: .git directory not found. Setting pretend version for installation."; \
-		if [ "$(VENV_RELEASE)" = "true" ] || [ "$(VENV_RELEASE)" = "TRUE" ]; then \
-			SETUPTOOLS_SCM_PRETEND_VERSION_FOR_MATI=0.0.1 "$(VENV_BIN)/pip" install -e ".[release]" || { echo "Error: Failed to install dependencies (no Git)."; exit 1; }; \
-		else \
-			SETUPTOOLS_SCM_PRETEND_VERSION_FOR_MATI=0.0.1 "$(VENV_BIN)/pip" install -e ".[dev]" || { echo "Error: Failed to install dependencies (no Git)."; exit 1; }; \
-		fi; \
+		SETUPTOOLS_SCM_PRETEND_VERSION_FOR_MATI=0.0.1 "$(VENV_BIN)/pip" install -e ".[dev,test]" || { echo "Error: Failed to install dependencies (no Git)."; exit 1; }; \
 	else \
 		echo "NOTE: .git directory found. Using setuptools_scm for versioning."; \
-		if [ "$(VENV_RELEASE)" = "true" ] || [ "$(VENV_RELEASE)" = "TRUE" ]; then \
-			"$(VENV_BIN)/pip" install -e ".[release]" || { echo "Error: Failed to install dependencies (with Git)."; exit 1; }; \
-		else \
-			"$(VENV_BIN)/pip" install -e ".[dev]" || { echo "Error: Failed to install dependencies (with Git)."; exit 1; }; \
-		fi; \
+		"$(VENV_BIN)/pip" install -e ".[dev,test]" || { echo "Error: Failed to install dependencies (with Git)."; exit 1; }; \
 	fi
-
-.PHONY: examples
-examples: setup-venv
-	@echo "TODO: Implementation"
 
 .PHONY: test-requirements
 test-requirements: setup-venv
