@@ -34,7 +34,7 @@ signals_read = MatInterface.get(file_path=output_file)
 print(signals_read)
 
 # Example: Reading specific signals from a struct
-signals_from_struct = MatInterface.get(file_path=output_file, struct_name=['my_struct'])
+signals_from_struct = MatInterface.get(file_path=output_file, struct_list=['my_struct'])
 
 # Example: Reading signals with a label filter
 signal_1_data = MatInterface.get(file_path=output_file, label_filter=['signal1'])
@@ -69,7 +69,7 @@ Signals are stored as datasets at the same level, sharing a common timestamp vec
 └── timestamps  (dataset: 1-D shared timestamps, can also be named 'time')
 ```
 
-### 3. Nested Struct Layout (via `struct_name`)
+### 3. Nested Struct Layout (via `struct_list`)
 The interface can target signals nested within MATLAB structs (HDF5 groups). Within a single targeted struct, all signals must follow the **same** layout; combining layouts within one struct is not supported.
 
 #### Layout: Struct with Flat Signals
@@ -77,7 +77,7 @@ All datasets within the struct share a common timestamp vector.
 
 ```text
 / (root)
-└── my_struct_A/   <-- Targeted via struct_name=['my_struct_A']
+└── my_struct_A/   <-- Targeted via struct_list=['my_struct_A']
     ├── signal_1   (dataset: N-D values)
     ├── signal_2   (dataset: N-D values)
     └── timestamps (dataset: 1-D shared timestamps)
@@ -88,7 +88,7 @@ Each signal within the struct is its own group containing its specific time vect
 
 ```text
 / (root)
-└── my_struct_B/   <-- Targeted via struct_name=['my_struct_B']
+└── my_struct_B/   <-- Targeted via struct_list=['my_struct_B']
     ├── signal_1/
     │   ├── Time
     │   └── Data
@@ -99,11 +99,13 @@ Each signal within the struct is its own group containing its specific time vect
 
 ## API Documentation
 
-### `MatInterface.write(output_path: Path, signals: list[dict[str, str | np.typing.NDArray[np.generic]]]) -> None`
+```python 
+MatInterface.write(output_path: Path, signals: list[dict[str, str | np.typing.NDArray[np.generic]]]) -> None
+```
 
 *   **Description:** Writes a list of signals to a MAT 7.3 file (HDF5). Each signal is stored as a top-level HDF5 group containing 'Time', 'Data', and 'Events' members ('Events' can be ignored, just for MATLAB compatibility). 
 Additional the group carries `MATLAB_class = "timeseries"` and `MATLAB_fields` attributes for MATLAB compatibility.
-*   **Parameters:**
+*   **Arguments:**
     *   `output_path` (Path): The path to the output MAT file.
     *   `signals` (list[dict]): A list of dictionaries, where each dictionary represents a signal and must contain:
         *   `'label'` (str): The name of the signal.
@@ -111,16 +113,18 @@ Additional the group carries `MATLAB_class = "timeseries"` and `MATLAB_fields` a
         *   `'value'` (np.ndarray): A 1-D, 2-D, or 3-D NumPy array representing the signal's values. The dtype will be mapped to a corresponding MATLAB numerical type.
 *   **Note:** This method adds MATLAB-specific headers and attributes for compatibility. MATLAB's `load()` will recognize the structure, but true MATLAB `timeseries` objects require MATLAB's MCOS serialization, which cannot be produced from Python.
 
-### `MatInterface.get(file_path: Path, label_filter: list[str] | None = None, struct_name: list[str] | None = None) -> list[dict[str, str | np.typing.NDArray[np.generic]]]`
+```python
+MatInterface.get(file_path: Path, label_filter: list[str] | None = None, struct_list: list[str] | None = None) -> list[dict[str, str | np.typing.NDArray[np.generic]]]
+```
 
 *   **Description:** Reads signals from a MAT 7.3 or lower file. It intelligently determines the MAT-file version and uses either `h5py` for v7.3 (HDF5) files or `scipy.io.loadmat` for older versions. It supports 2 different data layouts:
     *   **Timeseries struct layout:** Each signal is a group containing 'Time' and 'Data' sub-datasets.
     *   **Flat signal arrays:** Signals are top-level datasets, with timestamps assumed to be in a separate dataset named 'timestamps' or 'time'.
-    It can optionally filter signals by `label_filter` or by reading from specific `struct_name` groups within the MAT file.
-*   **Parameters:**
+    It can optionally filter signals by `label_filter` or by reading from specific `struct_list` groups within the MAT file.
+*   **Arguments:**
     *   `file_path` (Path): The path to the MAT file to read.
     *   `label_filter` (list[str] | None, optional): A list of signal names (labels) to filter and read. If `None`, all readable signals are returned.
-    *   `struct_name` (list[str] | None, optional): A list of struct group names within the MAT file from which to extract signals. If `None`, signals are read from the root level of the MAT file.
+    *   `struct_list` (list[str] | None, optional): A list of struct group names within the MAT file from which to extract signals. If `None`, signals are read from the root level of the MAT file.
 *   **Returns:** A list of dictionaries, where each dictionary represents a signal and contains:
     *   `'label'` (str): The name of the signal.
     *   `'timestamps'` (np.ndarray | None): A 1-D NumPy array of timestamps, or `None` if not found.
