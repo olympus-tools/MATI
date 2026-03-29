@@ -10,8 +10,23 @@ This product contains dependencies with the following licenses:
 
 Apache Software License License:
 ------------------------------------------------------------------------------
+  * mati 0.1.0
+    URL: UNKNOWN
+
+  * mati 0.1.0
+    URL: UNKNOWN
+
+  * mati 0.1.dev4+g65bcbb1a1.d19800101
+    URL: UNKNOWN
+
   * meson 1.10.1
     URL: https://mesonbuild.com
+
+
+Apache-2.0 License:
+------------------------------------------------------------------------------
+  * coverage 7.13.5
+    URL: https://github.com/coveragepy/coveragepy
 
 
 Apache-2.0 OR BSD-2-Clause License:
@@ -49,9 +64,6 @@ MIT License:
   * pipdeptree 2.34.0
     URL: https://github.com/tox-dev/pipdeptree
 
-  * pytest 9.0.2
-    URL: https://docs.pytest.org/en/latest/
-
   * ruff 0.15.8
     URL: https://docs.astral.sh/ruff
 
@@ -61,8 +73,17 @@ MIT License:
 
 MIT License License:
 ------------------------------------------------------------------------------
+  * debugpy 1.8.20
+    URL: https://aka.ms/debugpy
+
   * pluggy 1.6.0
     URL: UNKNOWN
+
+  * pytest 8.4.1
+    URL: https://docs.pytest.org/en/latest/
+
+  * pytest-cov 6.0.0
+    URL: https://github.com/pytest-dev/pytest-cov
 
 
 PSF-2.0 License:
