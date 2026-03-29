@@ -2,20 +2,12 @@
 # commands:
 #   - make setup-venv
 #   - make examples
-#   - make test-examples
 #   - make test-requirements
 #   - make test-coverage
 #   - make format
 #   - make format-check
-#   - make build-executable
-#   - make docs
-#   - make clean
-#   - make clean-light
-#   - make release-checklist
-#   - make release-changelog
 #   - make thirdpartycheck
-#   - make release-upload
-#   - make release
+#   - make clean
 
 VENV_DIR := .venv
 VENV_RECREATE := false
@@ -51,35 +43,19 @@ setup-venv:
 	# Check if .git exists to decide on versioning strategy for editable install \
 	if [ ! -d ".git" ]; then \
 		echo "NOTE: .git directory not found. Setting pretend version for installation."; \
-		if [ "$(VENV_RELEASE)" = "true" ] || [ "$(VENV_RELEASE)" = "TRUE" ]; then \
-			SETUPTOOLS_SCM_PRETEND_VERSION_FOR_MATI=0.0.1 "$(VENV_BIN)/pip" install -e ".[release]" || { echo "Error: Failed to install dependencies (no Git)."; exit 1; }; \
-		else \
-			SETUPTOOLS_SCM_PRETEND_VERSION_FOR_MATI=0.0.1 "$(VENV_BIN)/pip" install -e ".[dev]" || { echo "Error: Failed to install dependencies (no Git)."; exit 1; }; \
-		fi; \
+		SETUPTOOLS_SCM_PRETEND_VERSION_FOR_MATI=0.0.1 "$(VENV_BIN)/pip" install -e ".[dev,test]" || { echo "Error: Failed to install dependencies (no Git)."; exit 1; }; \
 	else \
 		echo "NOTE: .git directory found. Using setuptools_scm for versioning."; \
-		if [ "$(VENV_RELEASE)" = "true" ] || [ "$(VENV_RELEASE)" = "TRUE" ]; then \
-			"$(VENV_BIN)/pip" install -e ".[release]" || { echo "Error: Failed to install dependencies (with Git)."; exit 1; }; \
-		else \
-			"$(VENV_BIN)/pip" install -e ".[dev]" || { echo "Error: Failed to install dependencies (with Git)."; exit 1; }; \
-		fi; \
+		"$(VENV_BIN)/pip" install -e ".[dev,test]" || { echo "Error: Failed to install dependencies (with Git)."; exit 1; }; \
 	fi
-
-.PHONY: examples
-examples: setup-venv
-	@echo "TODO: Implementation"
-
-.PHONY: test-examples
-test-examples: setup-venv
-	@echo "TODO: Implementation"
 
 .PHONY: test-requirements
 test-requirements: setup-venv
-	@echo "TODO: Implementation"
+	@"$(VENV_BIN)/pytest"
 
 .PHONY: test-coverage
 test-coverage: setup-venv
-	@echo "TODO: Implementation"
+	@"$(VENV_BIN)/pytest" --cov --cov-report=html --cov-report=term-missing
 
 .PHONY: format
 format: setup-venv
@@ -89,18 +65,6 @@ format: setup-venv
 format-check: setup-venv
 	@"$(VENV_BIN)/ruff" format --check .
 
-.PHONY: build-executable
-build-executable: setup-venv
-	@echo "TODO: Implementation"
-
-.PHONY: release-checklist
-release-checklist:
-	@echo "TODO: Implementation"
-
-.PHONY: release-changelog
-release-changelog:
-	@echo "TODO: Implementation"
-
 .PHONY: thirdpartycheck
 thirdpartycheck: setup-venv
 	@echo ""
@@ -108,45 +72,15 @@ thirdpartycheck: setup-venv
 	@"$(VENV_BIN)/python" scripts/analyze_dependencies.py --format json --generate-notice --check-compatibility
 	@echo "Third-party dependency check complete."
 
-.PHONY: release-upload
-release-upload:
-	@echo "TODO: Implementation"
-
-.PHONY: release
-release: release-checklist release-changelog thirdpartycheck build-executable release-upload
-	@echo "TODO: Implementation"
-
-.PHONY: docs
-docs: setup-venv
-	@echo "TODO: Implementation"
-
 .PHONY: clean
 clean:
-	@printf "WARNING: This will permanently delete all generated files, caches, and logs. Continue? [y/n] "; \
-	read -r REPLY; \
-	if [ "$$REPLY" = "y" ] || [ "$$REPLY" = "Y" ]; then \
-		echo "Cleaning project in mode full..."; \
-		$(MAKE) clean-light; \
-		rm -rf logs; \
-		rm -rf build; \
-		rm -rf dist; \
-		rm -rf examples/output; \
-		rm -rf docs/_build; \
-		echo "Project cleaned successfully in mode full."; \
-	else \
-		echo "Clean cancelled."; \
-	fi
-
-.PHONY: clean-light
-clean-light:
-	echo "Cleaning project in mode light..."; \
+	echo "Cleaning project..."; \
 	find . -type f -name "*.pyc" -delete; \
 	find . -type d -name "__pycache__" -exec rm -rf {} +; \
 	find . -type d -name "log" -exec rm -rf {} +; \
 	find . -type d -name ".pytest_cache" -exec rm -rf {} +; \
 	find . -type d -name ".ruff_cache" -exec rm -rf {} +; \
-	find . -type f -name "*.spec" -delete; \
 	rm -f .coverage .coverage.*; \
 	rm -rf htmlcov; \
-	$(MAKE) -C examples/sim_unit clean; \
+	rm -rf logs; \
 	echo "Project cleaned successfully in mode light."; \
