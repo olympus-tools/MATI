@@ -1,3 +1,7 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
 [project]
 name = "mati"
 description = "*.mat file interface"
@@ -33,9 +37,10 @@ classifiers = [
     # Environment
     "Environment :: Console",
 ]
-
 dependencies = [
-    "typeguard==4.4.4",
+    "h5py>=3.16.0",
+    "scipy>=1.17.1",
+    "typeguard>=4.4.4",
 ]
 dynamic = ["version"]
 
@@ -45,40 +50,25 @@ test = [
     "pytest-cov==6.0.0",
 ]
 dev = [
-    "ruff==0.12.11",
-    "gitpython==3.1.45",
-    "pip-licenses==5.0.0",
-    "pipdeptree==2.23.4",
+    "ruff>=0.15.8",
+    "debugpy>=1.8.20",
+    "pip-licenses>=5.5.1",
+    "pipdeptree>=2.34.0",
     "mati[test]",
 ]
-docs = []
-release = [
-    "mati[dev]",
-    "mati[docs]",
-]
 
-[project.urls]
-"Homepage" = "https://github.com/olympus-tools/MATI"
-"Documentation" = "https://github.com/olympus-tools/MATI#readme"
-"Bug Tracker" = "https://github.com/olympus-tools/MATI/issues"
-"Repository" = "https://github.com/olympus-tools/MATI"
-"Changelog" = "https://github.com/olympus-tools/MATI/releases"
-"Source" = "https://github.com/olympus-tools/MATI"
-"Security Policy" = "https://github.com/olympus-tools/MATI/security/policy"
-"Contributing" = "https://github.com/olympus-tools/MATI/blob/master/CONTRIBUTING.md"
+[tool.hatch.build.targets.wheel]
+packages = ["mati"]
 
-[tool.setuptools.packages.find]
-include = ["mati*"]
+[tool.hatch.version]
+source = "vcs"
 
-[tool.setuptools.package-data]
-mati = ["py.typed"]
-
-[tool.setuptools_scm]
-write_to = "mati/core/version.py"
+[tool.hatch.build.hooks.vcs]
+version-file = "mati/version.py"
 
 [tool.pytest.ini_options]
+pythonpath = ["."]
 testpaths = ["test"]
-python_files = ["test_*.py"]
 addopts = [
     "--ignore=test/examples",
 ]
@@ -87,12 +77,10 @@ addopts = [
 # The maximum line length.
 line-length = 88
 # The target Python version.
-target-version = "py312"
+target-version = "py313"
 # Excluded files and directories.
 exclude = [
-    "ares/core/version.py",
-    "packages",
-    "submodules",
+    "version.py",
     ".venv",
 ]
 
