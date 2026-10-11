@@ -9,17 +9,16 @@
 #   - make thirdpartycheck
 #   - make clean
 
-VENV_DIR := .venv
-VENV_RECREATE := false
-VENV_RELEASE := false
+# Release metadata is maintained in pyproject.toml and checked against the tag.
+RELEASE_TAG := $(shell git describe --tags --exact-match --match 'v[0-9]*' 2>/dev/null)
+VERSION := $(shell sed -n 's/^version = "\([^"]*\)"/\1/p' pyproject.toml)
+RELEASE_ARCHIVE := dist/ares-$(VERSION)-release.zip
 
 # Platform detection for virtual environment binary path
 ifeq ($(OS),Windows_NT)
-	VENV_BIN := $(VENV_DIR)/Scripts
 	PLATFORM := windows
 	PATHSEP := ;
 else
-	VENV_BIN := $(VENV_DIR)/bin
 	PLATFORM := unix
 	PATHSEP := :
 endif
@@ -36,7 +35,7 @@ test-requirements: setup-venv
 
 .PHONY: test-coverage
 test-coverage: setup-venv
-	uv run pytest --cov --cov-report=html --cov-report=term-missing
+	NUMBA_DISABLE_JIT=1 uv run pytest --cov --cov-report=html --cov-report=term-missing
 
 .PHONY: format
 format: setup-venv
@@ -50,7 +49,7 @@ format-check: setup-venv
 thirdpartycheck: setup-venv
 	@echo ""
 	@echo "Running third-party dependency analysis..."
-	uv run python scripts/analyze_dependencies.py --format json --generate-notice --check-compatibility
+	uv run scripts/analyze_dependencies.py --format json --generate-notice --check-compatibility
 	@echo "Third-party dependency check complete."
 
 .PHONY: clean

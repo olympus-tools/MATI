@@ -51,10 +51,13 @@ test = [
 ]
 dev = [
     "ruff>=0.15.8",
-    "debugpy>=1.8.20",
     "pip-licenses>=5.5.1",
     "pipdeptree>=2.34.0",
     "mati[test]",
+]
+
+debug = [
+    "debugpy>=1.8.20",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -80,7 +83,6 @@ line-length = 88
 target-version = "py313"
 # Excluded files and directories.
 exclude = [
-    "version.py",
     ".venv",
 ]
 

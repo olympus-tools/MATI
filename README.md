@@ -16,17 +16,17 @@ import numpy as np
 # Example: Writing a MAT file
 signals_to_write = [
     {
-        'label': 'signal1',
-        'timestamps': np.array([0.0, 1.0, 2.0]),
-        'value': np.array([10, 20, 30])
+        "label": "signal1",
+        "timestamps": np.array([0.0, 1.0, 2.0]),
+        "value": np.array([10, 20, 30]),
     },
     {
-        'label': 'signal2',
-        'timestamps': np.array([0.0, 1.0, 2.0]),
-        'value': np.array([[1, 2], [3, 4], [5, 6]])
-    }
+        "label": "signal2",
+        "timestamps": np.array([0.0, 1.0, 2.0]),
+        "value": np.array([[1, 2], [3, 4], [5, 6]]),
+    },
 ]
-output_file = Path('output.mat')
+output_file = Path("output.mat")
 MatInterface.write(output_path=output_file, signals=signals_to_write)
 
 # Example: Reading a MAT file
@@ -34,10 +34,10 @@ signals_read = MatInterface.get(file_path=output_file)
 print(signals_read)
 
 # Example: Reading specific signals from a struct
-signals_from_struct = MatInterface.get(file_path=output_file, struct_list=['my_struct'])
+signals_from_struct = MatInterface.get(file_path=output_file, struct_list=["my_struct"])
 
 # Example: Reading signals with a label filter
-signal_1_data = MatInterface.get(file_path=output_file, label_filter=['signal1'])
+signal_1_data = MatInterface.get(file_path=output_file, label_filter=["signal1"])
 ```
 
 ## Supported Data Layouts
