@@ -1,0 +1,29 @@
+name: Test Coverage Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Environment
+        uses: ./.github/workflow-actions/setup
+
+      - name: Run coverage tests
+        run: |
+          make test-coverage
+
+      - name: Cleanup Environment
+        uses: ./.github/workflow-actions/cleanup

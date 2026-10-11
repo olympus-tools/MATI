@@ -16,6 +16,7 @@ docs/_build/*
 *.pyc
 *.pyo
 .python-version
+version.py
 
 # coverage
 .coverage

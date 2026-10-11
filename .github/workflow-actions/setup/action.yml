@@ -1,0 +1,26 @@
+name: 'Setup Environment'
+description: 'Setup Python 3.13.7 and print system information'
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python 3.13.7
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13.7'
+
+    - name: Print system information
+      shell: bash
+      run: |
+        echo "::group::System information"
+        echo "::notice title=Operating system::Linux."
+        echo "::notice title=Kernel::$(uname -a)."
+        echo "::notice title=Python::$(python --version 2>&1)."
+        echo "::endgroup::"
+
+    - name: Setup virtual environment
+      shell: bash
+      run: |
+        echo "::group::ARES environment setup"
+        pipx install uv
+        make setup-venv
+        echo "::endgroup::"
